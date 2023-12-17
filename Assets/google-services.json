@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "81350127366",
+    "project_id": "dmario-dca0c",
+    "storage_bucket": "dmario-dca0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81350127366:android:c239dc871b5463af8bf887",
+        "android_client_info": {
+          "package_name": "bull.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADuHB6T1fsHyeH3bjQQtUUJIZCol9x54g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
