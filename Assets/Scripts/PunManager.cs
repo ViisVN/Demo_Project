@@ -339,5 +339,9 @@ public class PunManager : MonoBehaviourPunCallbacks
         UIManager.Instance.HidePopup(UIPoupName.RoomScene);
         UIManager.Instance.ShowPopup(UIPoupName.LobbyScene);
     }
+    public void Chat()
+    {
+    
+    }
 
 }

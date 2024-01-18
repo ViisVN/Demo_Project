@@ -13,13 +13,11 @@ public class Save_Settings : MonoBehaviour
     {
         public string name;
         public float volume;
-        public float light;
          
-        public settings(string name,float volume,float light)
+        public settings(string name,float volume)
         {
             this.name = name;
             this.volume = volume;
-            this.light = light;
         }
     }    
     
@@ -39,13 +37,13 @@ public class Save_Settings : MonoBehaviour
     }
     private void Start()
     {
-       save_set_btn.onClick.AddListener(()=> Save_setting(nickname.text,volume.value,cur_light.value));
+       save_set_btn.onClick.AddListener(()=> Save_setting(nickname.text,volume.value));
        filePath = Application.persistentDataPath+"savesettings.json";
     }
 
-    private void Save_setting(string name, float volume, float light)
+    private void Save_setting(string name, float volume)
     {
-        settings set = new settings(name,volume,light);
+        settings set = new settings(name,volume);
         string json = JsonUtility.ToJson(set);
         File.WriteAllText(filePath,json);
         PunManager.Instance.nicknameInput.text = name;
@@ -60,7 +58,6 @@ public class Save_Settings : MonoBehaviour
             PunManager.Instance.nicknameInput.text = set.name;
             nickname.text = set.name;
             volume.value = set.volume;
-            cur_light.value = set.light;
         }
     }
 }

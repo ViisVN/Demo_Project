@@ -58,12 +58,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4719593546154891456}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.017, y: 0.475, z: 0.387}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.017, y: -0.024999976, z: 0.38699996}
   m_LocalScale: {x: 0.86216515, y: 0.19550404, z: 0.2993728}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6062143934982907486}
+  m_Father: {fileID: 2135710157801645413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5297906359275503595
 MeshFilter:
@@ -144,6 +144,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2007447993584430848}
   - {fileID: 5860799499518523285}
   m_Father: {fileID: 4731734885286012493}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -328,7 +329,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2007447993584430848}
   - {fileID: 4731734885286012493}
   - {fileID: 4503555091288455128}
   m_Father: {fileID: 0}
@@ -397,6 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPoint: {fileID: 4731734885286012493}
   moveSensitivity: 1
+  gunGoj: {fileID: 5229093305570413359}
   invertLook: 0
   moveSpeed: 5
   runSpeed: 8
@@ -426,6 +427,8 @@ MonoBehaviour:
   isTeamBlue: 0
   is_death: 0
   actorNumber: 0
+  _clip: {fileID: 8300000, guid: b461f499980584f8190396906cb94764, type: 3}
+  death_clip: {fileID: 8300000, guid: f2ca804eb5540b64e94716575f953e3b, type: 3}
 --- !u!143 &6254933484627476093
 CharacterController:
   m_ObjectHideFlags: 0

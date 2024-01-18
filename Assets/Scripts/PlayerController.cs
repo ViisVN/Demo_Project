@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviourPun
     public float moveSensitivity = 1f;
     private float verticalRotStore;
     private Vector2 moveInput;
-
+    public GameObject gunGoj;
     public bool invertLook;
 
     public float moveSpeed = 5f, runSpeed = 8f;
@@ -77,7 +77,9 @@ public class PlayerController : MonoBehaviourPun
 
     //Climb Ladder
     private bool isClimbLadder;
-
+    
+    //Sound Effect
+    [SerializeField] AudioClip _clip,death_clip;
 
     void OnEnable()
     {
@@ -124,7 +126,8 @@ public class PlayerController : MonoBehaviourPun
             Score_Manager.Instance.UpdateScore();
             PlayerList_Manager.instance.playerslist.Find(player => player.actorID == deathactor).death = (int)datas[7];
             PlayerList_Manager.instance.playerslist.Find(player => player.actorID == killactor).kill = (int)datas[8];
-            PhotonView.Find(viewID).gameObject.transform.position = SpawnManager.instance.GetSpawnPoints_2(!isTeamblue).position;
+              StartCoroutine(TargetDeath(PhotonView.Find(viewID).gameObject.GetComponent<PlayerController>()));
+            //PhotonView.Find(viewID).gameObject.transform.position = SpawnManager.instance.GetSpawnPoints_2(!isTeamblue).position;
         }
 
     }
@@ -161,6 +164,10 @@ public class PlayerController : MonoBehaviourPun
     {
         if (view.IsMine)
         {
+            if (Chat_Manager.Instance.isChatting)
+            {
+                return;
+            }
             //Release or lock cursor
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -244,18 +251,18 @@ public class PlayerController : MonoBehaviourPun
             movement.y = jumpForce;
         }
 
-       
+
 
         if (!isClimbLadder)
         {
-             movement.y += Physics.gravity.y * Time.deltaTime * gravityMode;
+            movement.y += Physics.gravity.y * Time.deltaTime * gravityMode;
             characterController.Move(movement * Time.deltaTime);
         }
         else
         {
             if (Input.GetKey(KeyCode.W))
             {
-                characterController.Move(Vector3.up* moveSpeed*20f * Time.deltaTime );
+                characterController.Move(Vector3.up * moveSpeed * 20f * Time.deltaTime);
             }
             if (Input.GetKey(KeyCode.S) && !isGrounded)
             {
@@ -291,6 +298,7 @@ public class PlayerController : MonoBehaviourPun
                 if (shotCounter <= 0)
                 {
                     Shoot();
+                    
                 }
             }
 
@@ -470,7 +478,8 @@ public class PlayerController : MonoBehaviourPun
                     Score_Manager.Instance.UpdateScore();
                     // int - int - int - bool - bool - int - int - int - int
                     PhotonNetwork.Instantiate(death_animtions.name, target.gameObject.transform.position, Quaternion.identity);
-                    target.transform.position = SpawnManager.instance.GetSpawnPoints_2(!isTeamBlue).position;
+                    StartCoroutine(TargetDeath(target));
+                    StartCoroutine(Respawn_UI());
                     int deathnumber = PlayerList_Manager.instance.playerslist.Find(player => player.actorID == target.actorNumber).death += 1;
                     int killnumber = PlayerList_Manager.instance.playerslist.Find(player => player.actorID == actorNumber).kill += 1;
                     object[] datas = new object[]{Score_Manager.Instance.RedScore,Score_Manager.Instance.BlueScore,viewID,target.is_death,target.isTeamBlue,
@@ -480,7 +489,28 @@ public class PlayerController : MonoBehaviourPun
             }
         }
     }
-
+    
+    IEnumerator Respawn_UI()
+    {   if(!Score_Manager.Instance.gameOver)
+    {
+        Chat_Manager.Instance.isChatting = true;
+        UIManager.Instance.ShowPopup(UIPoupName.DeathScene);
+        yield return new WaitForSecondsRealtime(3f);
+        UIManager.Instance.HidePopup(UIPoupName.DeathScene);
+        Chat_Manager.Instance.isChatting = false;
+    }
+    }
+    IEnumerator TargetDeath(PlayerController target)
+    {
+        target.gunGoj.SetActive(false);
+        target.GetComponent<MeshRenderer>().enabled = false;
+        target.GetComponent<CharacterController>().enabled = false;
+        yield return new WaitForSecondsRealtime(3f);
+        target.transform.position = SpawnManager.instance.GetSpawnPoints_2(target.isTeamBlue).position;
+        target.GetComponent<MeshRenderer>().enabled = true;
+        target.GetComponent<CharacterController>().enabled = true;
+        target.gunGoj.SetActive(true);
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -492,7 +522,7 @@ public class PlayerController : MonoBehaviourPun
     }
     void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.CompareTag("Ladder"))
+        if (other.gameObject.CompareTag("Ladder"))
         {
             isClimbLadder = false;
         }

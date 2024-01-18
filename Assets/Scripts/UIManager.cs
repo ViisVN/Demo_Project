@@ -13,7 +13,10 @@ public enum UIPoupName
     StartGame_Button=6,
     Option =7,
     LeaderBoard =4,
-    FinalResult =5
+    FinalResult =5,
+    Chat = 8,
+    Chat_text_content =9,
+    DeathScene =10,
 }
 
 public class UIManager : MonoBehaviour
